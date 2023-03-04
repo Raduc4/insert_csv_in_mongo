@@ -1,20 +1,16 @@
 mod client;
-
-use chrono::{TimeZone, Utc};
 use client::Record;
-use mongodb::bson::doc;
-use mongodb::Collection;
+
 use mongodb::{
     options::{ClientOptions, ResolverConfig},
     Client,
 };
-use std::collections::HashMap;
 use std::error::Error;
 use tokio;
 
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn Error>> {
-    let client_uri = "mongodb+srv://radu:j0fFCHRGolqlI1Mw@cluster0.6ogxery.mongodb.net/?retryWrites=true&w=majority";
+    let client_uri = "mongodb+srv://radu:0fFCHRGolqlI1Mw@cluster0.6ogxery.mongodb.net/?retryWrites=true&w=majority";
     let options =
         ClientOptions::parse_with_resolver_config(&client_uri, ResolverConfig::cloudflare())
             .await?;
@@ -34,7 +30,7 @@ async fn main() -> Result<(), Box<dyn Error>> {
             .unwrap()
             .clone();
 
-        let db_client: mongodb::Collection<_> = client.database("clients").collection("contracts");
+        let db_client: mongodb::Collection<_> = client.database("test").collection("contracts");
 
         let insert_result = db_client.insert_one(new_document.clone(), None).await?;
         println!("New document ID: {}", insert_result.inserted_id);
